@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .red {
+            border: 10px solid gray;
+            font-size: 30px;
+        }
+
+        .green {
+            background-color: green;
+        }
+
+        .big {
+            font-size: 40px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="red" id="first">1
+        <div class="green">1.1</div>
+        <div class="green">1.2</div>
+    </div>
+    <div class="red">2
+        <div class="green">2.1</div>
+        <div class="green">2.2</div>
+    </div>
+    <div class="red">3</div>
+    <div class="red" id="x">4</div>
+    <div class="red">5</div>
+    <script>
+        //class写法
+        // class jQuery{
+        //     constructor(选择器){
+        //         const 所有标签 = document.querySelectorAll(选择器)
+        //         this.标签数组 = Array.from(所有标签)
+        //     }
+        //     addClass(className){
+        //         this.标签数组.forEach(标签 =>标签.classList.add(className))
+        //         console.log(this)
+        //         return this
+        //     }
+        //     removeClass(className){this.标签数组.forEach(标签 => 标签.classList.remove(className))}
+        // }
+        function jQuery(选择器或节点或节点集, 范围 = document) {
+            let 标签数组 = []
+            if (typeof 选择器或节点或节点集 === 'string') {
+                const 所有标签 = 范围.querySelectorAll(选择器或节点或节点集)
+                标签数组 = Array.from(所有标签)
+            } else if (选择器或节点或节点集 instanceof NodeList) {
+                标签数组 = Array.from(选择器或节点或节点集)
+            } else if (选择器或节点或节点集 instanceof Node) {
+                标签数组 = [选择器或节点或节点集]
+            } else {
+                throw new Error('参数类型错误')
+            }
+            const api = {
+                addClass: (className) => {
+                    标签数组.forEach(标签 => 标签.classList.add(className))
+                    return api
+                },
+                text: (newText) => {
+                    if (newText === undefined) {
+                        return 标签数组[0].textContent
+                    } else {
+                        标签数组[0].textContent = newText
+                        return api
+                    }
+                },
+                index: () => {
+                    const element = 标签数组[0]
+                    const parent = element.parentNode
+                    for(let i = 0; i < parent.children.length; i++){
+                        if(parent.children[i] === element){
+                            return i
+                        }
+                    }
+                }
+            }
+            return api
+        }
+        const $ = jQuery
+        const x = $('#x').index()
+        console.log(x)
+    </script>
+</body>
+
+</html>
